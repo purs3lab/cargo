@@ -116,7 +116,7 @@ pub struct Replacement {
 }
 
 /// Converts a [`DiagnosticSpan`] to a [`Snippet`].
-fn span_to_snippet(span: &DiagnosticSpan) -> Snippet {
+pub fn span_to_snippet(span: &DiagnosticSpan) -> Snippet {
     Snippet {
         file_name: span.file_name.clone(),
         line_range: LineRange {
@@ -134,7 +134,7 @@ fn span_to_snippet(span: &DiagnosticSpan) -> Snippet {
 }
 
 /// Converts a [`DiagnosticSpan`] into a [`Replacement`].
-fn collect_span(span: &DiagnosticSpan) -> Option<Replacement> {
+pub fn collect_span(span: &DiagnosticSpan) -> Option<Replacement> {
     let snippet = span_to_snippet(span);
     let replacement = span.suggested_replacement.clone()?;
     Some(Replacement {
