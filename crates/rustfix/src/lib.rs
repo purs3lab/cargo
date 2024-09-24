@@ -151,6 +151,7 @@ pub fn collect_suggestions<S: ::std::hash::BuildHasher>(
     only: &HashSet<String, S>,
     filter: Filter,
 ) -> Option<Suggestion> {
+    tracing::debug!("Hello -- from forked rustfix");
     if !only.is_empty() {
         if let Some(ref code) = diagnostic.code {
             if !only.contains(&code.code) {
