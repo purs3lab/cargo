@@ -271,3 +271,51 @@ pub fn apply_suggestions(code: &str, suggestions: &[Suggestion]) -> Result<Strin
     }
     fix.finish()
 }
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum CodeStatus {
+    Modified,
+    NotModified,
+}
+
+impl CodeStatus {
+    pub fn or(&self, other: Self) -> Self {
+        match self {
+            CodeStatus::Modified => CodeStatus::Modified,
+            CodeStatus::NotModified => other,
+        }
+    }
+}
+
+impl From<bool> for CodeStatus {
+    fn from(modified: bool) -> Self {
+        if modified {
+            Self::Modified
+        } else {
+            Self::NotModified
+        }
+    }
+}
+
+pub fn apply_suggestions_with_outcome(
+    code: &str,
+    suggestions: &[Suggestion],
+) -> Result<(String, CodeStatus), Error> {
+    let mut already_applied = HashSet::new();
+    let mut fix = CodeFix::new(code);
+    for suggestion in suggestions.iter().rev() {
+        // This assumes that if any of the machine applicable fixes in
+        // a diagnostic suggestion is a duplicate, we should see the
+        // entire suggestion as a duplicate.
+        if suggestion
+            .solutions
+            .iter()
+            .any(|sol| !already_applied.insert(sol))
+        {
+            continue;
+        }
+        fix.apply(suggestion)?;
+    }
+    let final_code = fix.finish()?;
+    Ok((final_code, fix.modified().into()))
+}
