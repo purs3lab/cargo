@@ -1,17 +1,13 @@
 [workspace]
 resolver = "2"
-members = [
-  "crates/*",
-  "credential/*",
-  "benches/benchsuite",
-  "benches/capture",
-]
+members = ["crates/*", "credential/*", "benches/benchsuite", "benches/capture"]
 exclude = [
-  "target/", # exclude bench testing
+  "target/",            # exclude bench testing
+  "tests/testsuite/**", # Exclude broken TOMLs here
 ]
 
 [workspace.package]
-rust-version = "1.76"  # MSRV:3
+rust-version = "1.76"                             # MSRV:3
 edition = "2021"
 license = "MIT OR Apache-2.0"
 homepage = "https://github.com/rust-lang/cargo"
@@ -46,7 +42,13 @@ filetime = "0.2.23"
 flate2 = { version = "1.0.30", default-features = false, features = ["zlib"] }
 git2 = "0.19.0"
 git2-curl = "0.20.0"
-gix = { version = "0.63.0", default-features = false, features = ["blocking-http-transport-curl", "progress-tree", "revision", "parallel", "dirwalk"] }
+gix = { version = "0.63.0", default-features = false, features = [
+  "blocking-http-transport-curl",
+  "progress-tree",
+  "revision",
+  "parallel",
+  "dirwalk",
+] }
 glob = "0.3.1"
 handlebars = { version = "5.1.2", features = ["dir_source"] }
 hex = "0.4.3"
@@ -74,7 +76,9 @@ pathdiff = "0.2.1"
 percent-encoding = "2.3.1"
 pkg-config = "0.3.30"
 proptest = "1.4.0"
-pulldown-cmark = { version = "0.11.0", default-features = false, features = ["html"] }
+pulldown-cmark = { version = "0.11.0", default-features = false, features = [
+  "html",
+] }
 rand = "0.8.5"
 regex = "1.10.4"
 rusqlite = { version = "0.31.0", features = ["bundled"] }
@@ -91,7 +95,13 @@ sha1 = "0.10.6"
 sha2 = "0.10.8"
 shell-escape = "0.1.5"
 supports-hyperlinks = "3.0.0"
-snapbox = { version = "0.6.9", features = ["diff", "dir", "term-svg", "regex", "json"] }
+snapbox = { version = "0.6.9", features = [
+  "diff",
+  "dir",
+  "term-svg",
+  "regex",
+  "json",
+] }
 tar = { version = "0.4.40", default-features = false }
 tempfile = "3.10.1"
 thiserror = "1.0.59"
@@ -128,7 +138,7 @@ name = "cargo"
 version = "0.82.0"
 edition.workspace = true
 license.workspace = true
-rust-version = "1.79"  # MSRV:1
+rust-version = "1.79" # MSRV:1
 homepage = "https://doc.rust-lang.org/cargo/index.html"
 repository.workspace = true
 documentation = "https://docs.rs/cargo"
@@ -255,7 +265,12 @@ doc = false
 vendored-openssl = ["openssl/vendored"]
 vendored-libgit2 = ["libgit2-sys/vendored"]
 # This is primarily used by rust-lang/rust distributing cargo the executable.
-all-static = ['vendored-openssl', 'curl/static-curl', 'curl/force-system-lib-on-osx', 'vendored-libgit2']
+all-static = [
+  'vendored-openssl',
+  'curl/static-curl',
+  'curl/force-system-lib-on-osx',
+  'vendored-libgit2',
+]
 
 [lints]
 workspace = true
